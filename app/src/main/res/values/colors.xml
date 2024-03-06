@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="navbar_background_color">#735DA5</color>
+    <color name="button_color">#D3C5E5</color>
+    <color name="dialog_button_color">#26C6DA</color>
+</resources>
