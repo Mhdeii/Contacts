@@ -1,7 +1,6 @@
 package com.example.contacts;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,47 +13,60 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
-
 public class DatePickerDialog extends DialogFragment {
 
     Calendar selectedDate;
     CalendarView cv;
-    Button saveButton;
+    Button select, cancel;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.select_date, container); //object allow to get a view from xml
+        final View view = inflater.inflate(R.layout.select_date, container);
         getDialog().setTitle("Select Date");
-        selectedDate = Calendar.getInstance();  //initial calendar object returns the terekh lyum
-        cv = view.findViewById(R.id.calendarView);
-        saveButton = view.findViewById(R.id.buttonSave);
+        selectedDate = Calendar.getInstance();
+        initLayouts(view);
+        return view;
+    }
 
+    private void initLayouts(View view) {
+        cv = view.findViewById(R.id.calendarView);
+        select = view.findViewById(R.id.buttonSave);
+        cancel = view.findViewById(R.id.buttonCancel);
         cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
-                selectedDate.set(year,month,day);
-                //Log.d("Dialog", selectedDate.getTime().toString());  how to test if its true
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                selectedDate.set(year, month, dayOfMonth);
             }
         });
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
+        select.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 saveItem(selectedDate);
             }
         });
-
-
-        return view;
     }
-    private void saveItem(Calendar calendar){
-        SaveDateListener activity = (SaveDateListener)getActivity();
+
+    private void saveItem(Calendar selectedDate) {
+        SaveDateListener activity = (SaveDateListener) getActivity();
         activity.didFinishDatePickerDialog(selectedDate);
         getDialog().dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setLayout(width, height);
     }
 
     public interface SaveDateListener{
         void didFinishDatePickerDialog(Calendar selectedDate);
     }
-
-
 }
