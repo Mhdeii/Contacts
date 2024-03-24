@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
     }
-
+    //edit dates
     private void setForEditing(boolean checked) {
         nameEditText.setEnabled(checked);
         addressEditText.setEnabled(checked);
